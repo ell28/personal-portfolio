@@ -43,24 +43,29 @@ Other useful spots:
 
 Add or reorder nav links in the `nav` array in `src/data/site.ts`.
 
-## Deploying (Vercel + Cloudflare DNS)
+## Deploying (Cloudflare Pages)
 
-This site is deployed on **Vercel** at **https://elliezer.dev**.
+This site is deployed on **Cloudflare Pages** at **https://elliezer.dev**.
 
-Vercel auto-detects Astro (build: `npm run build`, output: `dist`) — no adapter
-or extra config needed. Every push to `main` triggers a production deploy; other
-branches get preview URLs.
+Because the domain is managed in the same Cloudflare account, adding it as a
+custom domain wires up DNS + TLS automatically — no manual records, and the apex
+(`elliezer.dev`) works natively via CNAME flattening.
 
-### Custom domain (elliezer.dev)
+### Build settings
 
-The domain is registered/managed at **Cloudflare**. In the Vercel project add
-both `elliezer.dev` and `www.elliezer.dev`, then add these records in the
-Cloudflare DNS dashboard — set to **DNS only** (grey cloud, _not_ proxied) so
-Vercel can issue the TLS certificate:
+| Setting               | Value           |
+| --------------------- | --------------- |
+| Framework preset      | Astro           |
+| Build command         | `npm run build` |
+| Build output dir      | `dist`          |
+| `NODE_VERSION` (env)  | `22`            |
 
-| Type  | Name          | Value                  | Proxy    |
-| ----- | ------------- | ---------------------- | -------- |
-| A     | `@`           | `76.76.21.21`          | DNS only |
-| CNAME | `www`         | `cname.vercel-dns.com` | DNS only |
+> Set `NODE_VERSION=22` as a build environment variable — Astro 5 needs
+> Node ≥ 18.20.8 and Cloudflare's default build image ships an older Node.
 
-Always follow the exact values Vercel shows for your project — they can change.
+### Custom domain
+
+In the Pages project → **Custom domains → Set up a domain** → add `elliezer.dev`
+(and `www.elliezer.dev`). Cloudflare creates the DNS records and certificate for
+you. Every push to `main` triggers a production deploy; other branches get
+preview URLs.
