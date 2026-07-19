@@ -41,10 +41,10 @@ export const about = {
    */
   headshot: '/images/headshot.jpg',
   headline:
-    "Hi, I'm Elliezer — I craft native apps for iPhone, Apple Watch, and Android.",
+    "Hi, I'm Elliezer!",
   intro: [
-    "I'm a mobile developer focused on building clean, reliable iOS and watchOS apps with Swift and SwiftUI, with a growing footprint on Android too. I care about the small details that make an app feel effortless to use.",
-    "Most of what you'll see here started as a challenge at the Apple Developer Academy — from AR experiences to Apple Watch companions. When I'm not shipping apps, I'm usually exploring new frameworks, prototyping ideas, or refining a design until it feels right.",
+    "A tech enthusiast from 10 years old and jumped into informatics as my first passion. I'm a mobile developer focused on building clean, reliable iOS and watchOS apps with Swift and SwiftUI, with a growing footprint on Android too. I care about the small details that make an app feel effortless to use.",
+    "Most of what you'll see here started as a challenge at the Apple Developer Academy because my freelance project are usually NDAs (I really wanted to tell you guys about it, seriously). From AR experiences to Apple Watch companions. When I'm not shipping apps, I'm usually exploring new frameworks, prototyping ideas, or refining a design until it feels right.",
   ],
 };
 
