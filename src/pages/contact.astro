@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, socials } from '../data/site';
+---
+
+<BaseLayout title="Contact" description={`Get in touch with ${site.name}.`}>
+  <div class="container">
+    <header class="page-head">
+      <p class="eyebrow">Contact</p>
+      <h1>Let's talk</h1>
+      <p class="lead">
+        Have a project in mind, a question, or just want to say hi? The fastest
+        way to reach me is by email.
+      </p>
+    </header>
+
+    <a class="email-cta" href={`mailto:${site.email}`}>
+      <span class="email-label muted">Email</span>
+      <span class="email-value">{site.email}</span>
+      <span class="email-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <div class="contact-meta">
+      {
+        site.location && (
+          <div class="meta-block">
+            <span class="meta-label muted">Based in</span>
+            <span>{site.location}</span>
+          </div>
+        )
+      }
+      <div class="meta-block">
+        <span class="meta-label muted">Elsewhere</span>
+        <ul class="contact-socials">
+          {
+            socials.map((s) => (
+              <li>
+                <a href={s.href} target="_blank" rel="noopener noreferrer">
+                  {s.label} ↗
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-bottom: 2.5rem;
+  }
+  .page-head .lead {
+    margin-top: 1rem;
+  }
+  .email-cta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    transition: border-color 0.2s var(--ease), transform 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
+  }
+  .email-cta:hover {
+    text-decoration: none;
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px -20px rgba(0, 0, 0, 0.28);
+  }
+  .email-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+  .email-value {
+    font-size: clamp(1.05rem, 3vw, 1.4rem);
+    font-weight: 550;
+    letter-spacing: -0.01em;
+  }
+  .email-arrow {
+    margin-left: auto;
+    font-size: 1.3rem;
+    color: var(--accent-ink);
+    transition: transform 0.2s var(--ease);
+  }
+  .email-cta:hover .email-arrow {
+    transform: translateX(4px);
+  }
+
+  .contact-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+  }
+  .meta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .meta-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+  .contact-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+  }
+</style>

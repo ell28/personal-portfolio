@@ -1,0 +1,158 @@
+---
+import { site, nav } from '../data/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+---
+
+<header class="site-header">
+  <nav class="nav container container-wide" aria-label="Primary">
+    <a class="wordmark" href="/">{site.name}</a>
+
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden />
+    <label for="nav-toggle" class="nav-burger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </label>
+
+    <ul class="nav-links">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class={isActive(item.href) ? 'active' : ''}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 4rem;
+  }
+
+  .wordmark {
+    font-weight: 650;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .wordmark:hover {
+    text-decoration: none;
+    color: var(--accent-ink);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links a {
+    display: inline-block;
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    transition: color 0.15s var(--ease), background 0.15s var(--ease);
+  }
+
+  .nav-links a:hover {
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--bg-subtle);
+  }
+
+  .nav-links a.active {
+    color: var(--accent-ink);
+    background: var(--accent-wash);
+  }
+
+  /* Mobile menu toggle (CSS-only, no JS) */
+  .nav-burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0.5rem;
+    margin: -0.5rem;
+    cursor: pointer;
+  }
+  .nav-burger span {
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+  }
+
+  @media (max-width: 640px) {
+    .nav-burger {
+      display: flex;
+    }
+    .nav-links {
+      position: absolute;
+      top: 4rem;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.15rem;
+      padding: 0.75rem 1.5rem 1.25rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.18);
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-6px);
+      transition: max-height 0.25s var(--ease), opacity 0.2s var(--ease),
+        transform 0.2s var(--ease);
+    }
+    .nav-toggle:checked ~ .nav-links {
+      max-height: 20rem;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .nav-links a {
+      padding: 0.7rem 0.75rem;
+      font-size: 1rem;
+    }
+    /* Burger → X */
+    .nav-toggle:checked ~ .nav-burger span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .nav-toggle:checked ~ .nav-burger span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-toggle:checked ~ .nav-burger span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+</style>

@@ -1,0 +1,57 @@
+---
+import { site, socials } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container container-wide footer-inner">
+    <p class="muted footer-copy">© {year} {site.name}</p>
+    <ul class="footer-links">
+      <li><a href={`mailto:${site.email}`}>Email</a></li>
+      {
+        socials.map((s) => (
+          <li>
+            <a href={s.href} target="_blank" rel="noopener noreferrer">
+              {s.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    margin-top: 4rem;
+    padding-block: 2rem;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-copy {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .footer-links a {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .footer-links a:hover {
+    color: var(--ink);
+    text-decoration: none;
+  }
+</style>

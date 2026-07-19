@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { site, about, projects, socials } from '../data/site';
+
+const featured = projects.filter((p) => p.featured);
+
+// Initials for the monogram shown when no headshot image is set.
+const parts = site.name.trim().split(/\s+/);
+const initials = (
+  (parts[0]?.[0] ?? '') + (parts.length > 1 ? parts[parts.length - 1][0] : '')
+).toUpperCase();
+---
+
+<BaseLayout title="About">
+  <div class="container container-wide">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">{site.role}</p>
+        <h1>{about.headline}</h1>
+        {about.intro.map((para) => <p class="lead">{para}</p>)}
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/projects">View projects</a>
+          <a class="btn btn-ghost" href="/contact">Get in touch</a>
+        </div>
+
+        <ul class="hero-socials">
+          {
+            socials.map((s) => (
+              <li>
+                <a href={s.href} target="_blank" rel="noopener noreferrer">
+                  {s.label} ↗
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="hero-portrait">
+        {
+          about.headshot ? (
+            <img
+              class="portrait-img"
+              src={about.headshot}
+              alt={site.name}
+              width="1066"
+              height="1600"
+            />
+          ) : (
+            <span class="portrait-mono" aria-hidden="true">
+              {initials}
+            </span>
+          )
+        }
+      </div>
+    </section>
+  </div>
+
+  <!-- Featured projects -->
+  {
+    featured.length > 0 && (
+      <div class="container container-wide">
+        <section class="section">
+          <div class="section-head">
+            <h2>Selected work</h2>
+            <a href="/projects">All projects →</a>
+          </div>
+          <div class="grid">
+            {featured.map((project) => (
+              <ProjectCard project={project} />
+            ))}
+          </div>
+        </section>
+      </div>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+    padding-top: 1rem;
+  }
+  .hero-text {
+    max-width: 42rem;
+  }
+  .hero-text .lead:first-of-type {
+    margin-top: 1.25rem;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+  .hero-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    font-size: 0.92rem;
+    font-weight: 500;
+  }
+
+  /* Portrait / headshot */
+  .hero-portrait {
+    justify-self: center;
+    width: 100%;
+    max-width: 230px;
+  }
+  .portrait-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 22px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.6);
+  }
+  .portrait-mono {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    display: grid;
+    place-items: center;
+    border-radius: 22px;
+    background: radial-gradient(
+      130% 130% at 50% 0%,
+      var(--accent-wash),
+      var(--bg-subtle)
+    );
+    border: 1px solid var(--border);
+    color: var(--accent-ink);
+    font-size: clamp(3rem, 9vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 720px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr) clamp(240px, 30%, 320px);
+      gap: 3.5rem;
+    }
+    .hero-portrait {
+      justify-self: end;
+      max-width: none;
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    gap: 1.25rem;
+  }
+</style>

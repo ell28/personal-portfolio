@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { resume, type ResumeEntry } from '../data/site';
+
+const sections: { heading: string; entries: ResumeEntry[] }[] = [
+  { heading: 'Experience', entries: resume.experience },
+  { heading: 'Education', entries: resume.education },
+];
+---
+
+<BaseLayout title="Resume" description="Experience, education, and skills.">
+  <div class="container">
+    <header class="page-head">
+      <div class="page-head-top">
+        <div>
+          <p class="eyebrow">Resume</p>
+          <h1>Experience &amp; skills</h1>
+        </div>
+        {
+          resume.pdf && (
+            <a class="btn btn-ghost" href={resume.pdf} download>
+              ↓ Download PDF
+            </a>
+          )
+        }
+      </div>
+      {resume.summary && <p class="lead">{resume.summary}</p>}
+    </header>
+
+    {
+      sections.map((section) => (
+        <section class="section">
+          <h2>{section.heading}</h2>
+          <div class="timeline">
+            {section.entries.map((entry) => (
+              <article class="entry">
+                <div class="entry-head">
+                  <h3 class="entry-title">
+                    {entry.title}
+                    <span class="entry-org"> · {entry.org}</span>
+                  </h3>
+                  <span class="entry-period muted">{entry.period}</span>
+                </div>
+                {entry.location && (
+                  <p class="entry-loc muted">{entry.location}</p>
+                )}
+                {entry.points.length > 0 && (
+                  <ul class="entry-points">
+                    {entry.points.map((pt) => (
+                      <li>{pt}</li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+
+    {
+      resume.skills.length > 0 && (
+        <section class="section">
+          <h2>Skills</h2>
+          <div class="tag-row skills">
+            {resume.skills.map((skill) => (
+              <span class="chip">{skill}</span>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-bottom: 1rem;
+  }
+  .page-head-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .entry {
+    border-left: 2px solid var(--border);
+    padding-left: 1.25rem;
+    position: relative;
+  }
+  .entry::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 0.55rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .entry-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .entry-title {
+    font-size: 1.1rem;
+  }
+  .entry-org {
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .entry-period {
+    font-size: 0.88rem;
+    white-space: nowrap;
+  }
+  .entry-loc {
+    font-size: 0.88rem;
+    margin: 0.15rem 0 0;
+  }
+  .entry-points {
+    margin: 0.65rem 0 0;
+    padding-left: 1.15rem;
+    color: var(--ink-soft);
+  }
+  .entry-points li {
+    margin-bottom: 0.35rem;
+  }
+  .skills {
+    gap: 0.5rem;
+  }
+</style>
